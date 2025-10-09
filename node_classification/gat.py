@@ -50,3 +50,9 @@ def test():
     test_acc = int(test_correct.sum()) / int(data.test_mask.sum())
     
     return train_acc, val_acc, test_acc
+
+for epoch in range(1, 201):
+    loss = train()
+    if epoch % 10 == 0:
+        train_acc, val_acc, test_acc = test()
+        print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}, Train: {train_acc:.4f}, Val: {val_acc:.4f}, Test: {test_acc:.4f}')
