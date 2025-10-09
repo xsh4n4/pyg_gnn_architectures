@@ -3,7 +3,6 @@ import torch.nn.functional as F
 from torch_geometric.datasets import Planetoid
 from torch_geometric.nn import GCNConv
 
-# Load the Cora dataset, a standard benchmark for node classification
 dataset = Planetoid(root='/tmp/Cora', name='Cora')
 data = dataset[0]
 
@@ -14,21 +13,19 @@ class GCN(torch.nn.Module):
         self.conv2 = GCNConv(hidden_channels, out_channels)
 
     def forward(self, x, edge_index):
-        # First GCN layer followed by a ReLU activation
+        
         x = self.conv1(x, edge_index)
         x = F.relu(x)
         x = F.dropout(x, p=0.5, training=self.training)
         
-        # Second GCN layer
         x = self.conv2(x, edge_index)
         return F.log_softmax(x, dim=1)
 
-# --- Model Initialization ---
 model = GCN(dataset.num_node_features, 16, dataset.num_classes)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
 criterion = torch.nn.CrossEntropyLoss()
 
-# --- Training Loop ---
+
 def train():
     model.train()
     optimizer.zero_grad()
@@ -38,12 +35,11 @@ def train():
     optimizer.step()
     return float(loss)
 
-# --- Testing ---
+
 def test():
     model.eval()
     pred = model(data.x, data.edge_index).argmax(dim=1)
     
-    # Calculate accuracy on the training, validation, and test sets
     train_correct = pred[data.train_mask] == data.y[data.train_mask]
     train_acc = int(train_correct.sum()) / int(data.train_mask.sum())
     

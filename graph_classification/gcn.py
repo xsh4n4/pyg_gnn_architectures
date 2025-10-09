@@ -4,9 +4,9 @@ from torch_geometric.datasets import TUDataset
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GCNConv, global_mean_pool
 
-# Load the MUTAG dataset
+
 dataset = TUDataset(root='/tmp/MUTAG', name='MUTAG')
-# Use a DataLoader for batching graphs
+
 loader = DataLoader(dataset, batch_size=64, shuffle=True)
 
 class GCN(torch.nn.Module):

@@ -5,10 +5,9 @@ from torch_geometric.nn import GCNConv
 import torch_geometric.transforms as T
 from sklearn.metrics import roc_auc_score
 
-# Load dataset and prepare for link prediction
 dataset = Planetoid(root='/tmp/Cora', name='Cora')
 data = dataset[0]
-# Split edges into training, validation, and test sets
+
 transform = T.RandomLinkSplit(is_undirected=True, add_negative_train_samples=True)
 train_data, val_data, test_data = transform(data)
 
