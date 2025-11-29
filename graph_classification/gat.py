@@ -51,8 +51,3 @@ def test(loader):
         correct += int((pred == data.y).sum())
     return correct / len(loader.dataset)
 
-for epoch in range(1, 101):
-    loss = train(loader)
-    acc = test(loader)
-    if epoch % 10 == 0:
-        print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}, Accuracy: {acc:.4f}')
