@@ -53,7 +53,12 @@ def train():
     optimizer.step()
     return float(loss)
 
-
+# --- Testing ---
+@torch.no_grad()
+def test(data):
+    model.eval()
+    out = model(data.x, data.edge_index, data.edge_label_index).sigmoid()
+    return roc_auc_score(data.edge_label.cpu().numpy(), out.cpu().numpy())
 
 for epoch in range(1, 101):
     loss = train()
