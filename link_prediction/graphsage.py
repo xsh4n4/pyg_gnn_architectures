@@ -27,7 +27,15 @@ class LinkPredictor(torch.nn.Module):
         edge_feat_v = z[edge_label_index[1]]
         return (edge_feat_u * edge_feat_v).sum(dim=-1)
 
+class Model(torch.nn.Module):
+    def __init__(self, in_channels, hidden_channels, out_channels):
+        super().__init__()
+        self.encoder = GraphSAGEEncoder(in_channels, hidden_channels, out_channels)
+        self.decoder = LinkPredictor()
 
+    def forward(self, x, edge_index, edge_label_index):
+        z = self.encoder(x, edge_index)
+        return self.decoder(z, edge_label_index)
 
 # --- Model Initialization and Training/Testing ---
 model = Model(dataset.num_node_features, 128, 64)
