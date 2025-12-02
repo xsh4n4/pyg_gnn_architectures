@@ -55,7 +55,14 @@ def train():
 
 # --- Testing ---
 @torch.no_grad()
+def test(data):
+    model.eval()
+    out = model(data.x, data.edge_index, data.edge_label_index).sigmoid()
+    return roc_auc_score(data.edge_label.cpu().numpy(), out.cpu().numpy())
 
+for epoch in range(1, 101):
+    loss = train()
+    val_auc = test(val_data)
     test_auc = test(test_data)
     if epoch % 10 == 0:
         print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}, Val AUC: {val_auc:.4f}, Test AUC: {test_auc:.4f}')
